@@ -74,6 +74,16 @@ CLOUD = "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
 BOOK = "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
 PAPER, PAPER_DARK, LINE, LINE_DARK, INK_SITE_DARK = "#f6f7f1", "#191c19", "#c7cbc0", "#42483e", "#e5e9df"
 
+def callout(text_color):
+    """'Try your own cloud Android phone for free!' with a hand-drawn arrow curving back to the Cloud button."""
+    arrow = (f'<g fill="none" stroke="{RED}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+             f'<path d="M44 26 C34 30 22 28 13 20"/><path d="M12 27 L12.5 19.5 L20 19"/></g>')
+    style = f"font:400 13px {SITE_FONT}"
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="230" height="40" viewBox="0 0 230 40" role="img" '
+            f'aria-label="Try your own cloud Android phone for free!">{arrow}'
+            f'<text x="50" y="17" fill="{text_color}" style="{style}">Try your own cloud</text>'
+            f'<text x="50" y="33" fill="{text_color}" style="{style}">Android phone <tspan fill="{RED}">for free!</tspan></text></svg>\n')
+
 def main():
     stars, downloads = stats()
     files = {
@@ -84,6 +94,8 @@ def main():
         "button-docs.svg": button("Docs", BOOK, "none", INK, LINE, 98),
         "button-docs-dark.svg": button("Docs", BOOK, "none", INK_SITE_DARK, LINE_DARK, 98),
     }
+    files["callout.svg"] = callout(MUTED)
+    files["callout-dark.svg"] = callout(MUTED_DARK)
     for name in ICONS:
         files[f"icon-{name}.svg"] = social(name, MUTED)
         files[f"icon-{name}-dark.svg"] = social(name, MUTED_DARK)
