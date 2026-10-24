@@ -35,12 +35,12 @@ def tagline(stars, downloads, ink, muted):
                    f".l{i}{{animation:l{i} {total}s infinite;opacity:0}}")
     texts = []
     for i, (lead, rest) in enumerate(lines):
-        first, second = (ink, RED) if i == 0 else (RED, ink)
-        texts.append(f'<text class="l{i}" x="300" y="34" text-anchor="middle">'
+        first, second = (muted, RED) if i == 0 else (RED, muted)
+        texts.append(f'<text class="l{i}" x="300" y="32" text-anchor="middle">'
                      f'<tspan fill="{first}">{lead}</tspan><tspan fill="{second}">{rest}</tspan></text>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="600" height="48" viewBox="0 0 600 48" role="img" '
             f'aria-label="Let your agent use your phone. {stars:,} stars on GitHub, {downloads:,} downloads on PyPI.">'
-            f'<style>text{{font:700 28px {FONT};letter-spacing:-0.5px}}{"".join(css)}</style>{"".join(texts)}</svg>\n')
+            f'<style>text{{font:400 24px {FONT};letter-spacing:-0.2px}}{"".join(css)}</style>{"".join(texts)}</svg>\n')
 
 def button(label, icon_path, fill, text, stroke, width):
     icon = f'<g transform="translate(18 11) scale(0.75)" fill="{text}"><path d="{icon_path}"/></g>' if icon_path else ""
