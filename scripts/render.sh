@@ -11,6 +11,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 README_REPO="${PHONE_HARNESS_REPO:-$HOME/Projects/phone-harness}"
+[ -n "${GITHUB_TOKEN:-}" ] || GITHUB_TOKEN=$(gh auth token 2>/dev/null || true); export GITHUB_TOKEN
 
 [ "${1:-}" = "--no-logo" ] || uv run --quiet --with fonttools python scripts/logo.py
 python3 scripts/build.py

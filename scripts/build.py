@@ -2,7 +2,7 @@
 GitHub stars and PyPI downloads), the Cloud and Docs buttons, and the social
 icons from phone-harness.com. Light and dark variants of each. Stdlib only;
 the scheduled workflow runs it daily and commits what changed."""
-import json, urllib.request
+import json, os, urllib.request
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent.parent / "phone-harness"
@@ -10,7 +10,11 @@ RED, INK, INK_DARK, MUTED, MUTED_DARK = "#ff4438", "#20231e", "#ecede6", "#64695
 FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
 
 def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "phone-harness-media", "Accept": "application/json"})
+    headers = {"User-Agent": "phone-harness-media", "Accept": "application/json"}
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token and url.startswith("https://api.github.com/"):
+        headers["Authorization"] = f"Bearer {token}"   # unauthenticated calls hit the 60/hour limit
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
 
@@ -89,8 +93,8 @@ def main():
     files = {
         "tagline.svg": tagline(stars, downloads, INK, MUTED),
         "tagline-dark.svg": tagline(stars, downloads, INK_DARK, MUTED_DARK),
-        "button-cloud.svg": button("Try Cloud", CLOUD, INK, PAPER, INK, 132),
-        "button-cloud-dark.svg": button("Try Cloud", CLOUD, RED, PAPER_DARK, RED, 132),
+        "button-cloud.svg": button("Cloud", CLOUD, INK, PAPER, INK, 104),
+        "button-cloud-dark.svg": button("Cloud", CLOUD, RED, PAPER_DARK, RED, 104),
         "button-docs.svg": button("Docs", BOOK, "none", INK, LINE, 98),
         "button-docs-dark.svg": button("Docs", BOOK, "none", INK_SITE_DARK, LINE_DARK, 98),
     }
