@@ -10,3 +10,4 @@ Images for Phone Harness READMEs and docs, linked by raw URL so they render on G
 ## Rerender
 
 `scripts/render.sh` rebuilds every image (logo, tagline, buttons, icons), commits and pushes them, then bumps the `?v=` on the image URLs in the phone-harness README so GitHub's image proxy fetches the new files. Set `PHONE_HARNESS_REPO` to the checkout whose README to bump (default `~/Projects/phone-harness`). The 6-hourly workflow only refreshes the stats, which GitHub re-fetches on its own within five minutes.
+- `phone-harness/demo-waymo.gif`: the README demo ("Buy me a Waymo to Delah Coffee"), 800 px, 12 fps, from phone-harness-demo.mp4.

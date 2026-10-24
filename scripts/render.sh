@@ -28,7 +28,7 @@ cd "$README_REPO"
 python3 - "$V" <<'PY'
 import pathlib, re, sys
 p = pathlib.Path("README.md"); s = p.read_text()
-s2, n = re.subn(r'(raw\.githubusercontent\.com/phone-harness/media/main/phone-harness/[\w.-]+\.svg)(\?v=\w+)?', rf'\1?v={sys.argv[1]}', s)
+s2, n = re.subn(r'(raw\.githubusercontent\.com/phone-harness/media/main/phone-harness/[\w.-]+\.(?:svg|gif|png))(\?v=\w+)?', rf'\1?v={sys.argv[1]}', s)
 p.write_text(s2); print(f"README: {n} image URLs now ?v={sys.argv[1]}")
 PY
 if git diff --quiet README.md; then echo "README already current"; else
