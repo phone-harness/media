@@ -15,10 +15,11 @@ README_REPO="${PHONE_HARNESS_REPO:-$HOME/Projects/phone-harness}"
 [ "${1:-}" = "--no-logo" ] || uv run --quiet --with fonttools python scripts/logo.py
 python3 scripts/build.py
 
-git add phone-harness scripts
+git add -A
 if git diff --cached --quiet; then echo "images unchanged"; else
   git commit -q -m "Rerender header images"
-  git pull -q --rebase && git push -q
+  git pull -q --rebase
+  git push -q
 fi
 V=$(git rev-parse --short HEAD)
 
