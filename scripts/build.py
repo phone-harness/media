@@ -43,13 +43,15 @@ def tagline(stars, downloads, ink, muted):
             f'aria-label="Let your agent use your phone. {stars // 100 * 100:,}+ stars on GitHub, {downloads // 100 * 100:,}+ downloads on PyPI.">'
             f'<style>text{{font:300 24px {FONT};letter-spacing:0px}}{"".join(css)}</style>{"".join(texts)}</svg>\n')
 
+SITE_FONT = "Arial, Helvetica, sans-serif"   # phone-harness.com's --sans
+
 def button(label, icon_path, fill, text, stroke, width):
-    icon = f'<g transform="translate(18 11) scale(0.75)" fill="{text}"><path d="{icon_path}"/></g>' if icon_path else ""
-    tx = 46 if icon_path else width / 2
-    anchor = "start" if icon_path else "middle"
+    """phone-harness.com's .btn: 3 px corners, Arial 14 px regular, a 16 px outline icon, 10 px gap."""
+    icon = (f'<g transform="translate(18 12)" fill="none" stroke="{text}" stroke-width="1.75" '
+            f'stroke-linecap="round" stroke-linejoin="round"><g transform="scale(0.6667)"><path d="{icon_path}"/></g></g>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="40" viewBox="0 0 {width} 40" role="img" aria-label="{label}">'
-            f'<rect x="1" y="1" width="{width-2}" height="38" rx="19" fill="{fill}" stroke="{stroke}" stroke-width="1.5"/>{icon}'
-            f'<text x="{tx}" y="25.5" text-anchor="{anchor}" fill="{text}" style="font:600 15px {FONT}">{label}</text></svg>\n')
+            f'<rect x="0.5" y="0.5" width="{width-1}" height="39" rx="3" fill="{fill}" stroke="{stroke}"/>{icon}'
+            f'<text x="44" y="24.8" fill="{text}" style="font:400 14px {SITE_FONT}">{label}</text></svg>\n')
 
 ICONS = {  # exactly the paths on phone-harness.com (frontend BrandChrome.tsx), 24-unit boxes
     "x": ("0 0 24 24", "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932 6.064-6.933Zm-1.29 19.49h2.039L6.487 3.24H4.3l13.31 17.403Z"),
@@ -67,18 +69,20 @@ def social(name, color):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40" role="img" aria-label="{name}">'
             f'<path fill="{color}" transform="translate({tx:.3f} {ty:.3f}) scale({k:.4f})" d="{d}"/></svg>\n')
 
-CLOUD = "M7 18a5 5 0 0 1-.6-9.96A6.5 6.5 0 0 1 19 9.5 4.25 4.25 0 0 1 18.25 18H7Z"
-BOOK = "M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5a1.5 1.5 0 0 0 0 3H20v-1.5h1.5V22a.5.5 0 0 1-.5.5H6.5A3 3 0 0 1 3.5 19.5v-15h.5Z"
+# Lucide-style 24-unit outline icons, like the ones on the site's buttons.
+CLOUD = "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+BOOK = "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+PAPER, PAPER_DARK, LINE, LINE_DARK, INK_SITE_DARK = "#f6f7f1", "#191c19", "#c7cbc0", "#42483e", "#e5e9df"
 
 def main():
     stars, downloads = stats()
     files = {
         "tagline.svg": tagline(stars, downloads, INK, MUTED),
         "tagline-dark.svg": tagline(stars, downloads, INK_DARK, MUTED_DARK),
-        "button-cloud.svg": button("Try Cloud", CLOUD, RED, "#ffffff", RED, 140),
-        "button-cloud-dark.svg": button("Try Cloud", CLOUD, RED, "#ffffff", RED, 140),
-        "button-docs.svg": button("Docs", BOOK, "#ffffff", INK, "#d6d8cf", 108),
-        "button-docs-dark.svg": button("Docs", BOOK, "#1b1d1a", INK_DARK, "#3d4039", 108),
+        "button-cloud.svg": button("Try Cloud", CLOUD, INK, PAPER, INK, 132),
+        "button-cloud-dark.svg": button("Try Cloud", CLOUD, RED, PAPER_DARK, RED, 132),
+        "button-docs.svg": button("Docs", BOOK, "none", INK, LINE, 98),
+        "button-docs-dark.svg": button("Docs", BOOK, "none", INK_SITE_DARK, LINE_DARK, 98),
     }
     for name in ICONS:
         files[f"icon-{name}.svg"] = social(name, MUTED)
