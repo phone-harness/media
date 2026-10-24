@@ -20,9 +20,10 @@ def stats():
     return stars, downloads
 
 def tagline(stars, downloads, ink, muted):
+    floor = lambda n: f"{n // 100 * 100:,}+" if n >= 100 else f"{n}"   # round down; changes only per hundred
     lines = [("Let your agent ", "use your phone."),
-             (f"{stars:,}", " stars on GitHub"),
-             (f"{downloads:,}", " downloads on PyPI")]
+             (floor(stars), " stars on GitHub"),
+             (floor(downloads), " downloads on PyPI")]
     n, hold = len(lines), 3.2
     total = n * hold
     css = []
@@ -39,7 +40,7 @@ def tagline(stars, downloads, ink, muted):
         texts.append(f'<text class="l{i}" x="300" y="32" text-anchor="middle">'
                      f'<tspan fill="{first}">{lead}</tspan><tspan fill="{second}">{rest}</tspan></text>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="600" height="48" viewBox="0 0 600 48" role="img" '
-            f'aria-label="Let your agent use your phone. {stars:,} stars on GitHub, {downloads:,} downloads on PyPI.">'
+            f'aria-label="Let your agent use your phone. {stars // 100 * 100:,}+ stars on GitHub, {downloads // 100 * 100:,}+ downloads on PyPI.">'
             f'<style>text{{font:400 24px {FONT};letter-spacing:-0.2px}}{"".join(css)}</style>{"".join(texts)}</svg>\n')
 
 def button(label, icon_path, fill, text, stroke, width):
